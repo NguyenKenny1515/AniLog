@@ -22,12 +22,14 @@ public class UserSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                         configurer
+                                .requestMatchers("/", "home").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
+                                .defaultSuccessUrl("/home", true)
                                 .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll)
