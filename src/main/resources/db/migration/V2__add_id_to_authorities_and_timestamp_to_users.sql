@@ -1,0 +1,5 @@
+ALTER TABLE authorities
+ADD id SERIAL PRIMARY KEY;
+
+ALTER TABLE users
+ADD created_datetime TIMESTAMPTZ NOT NULL DEFAULT NOW();

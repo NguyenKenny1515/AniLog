@@ -13,7 +13,7 @@ public class AuthenticationController {
         return "login";
     }
 
-    @GetMapping(value={"", "/", "home"})
+    @GetMapping(value = {"", "/", "home"})
     public String showHomePage(Principal principal) {
         if (principal != null) {
             return "home";
