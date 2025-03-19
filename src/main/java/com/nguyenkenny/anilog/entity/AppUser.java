@@ -28,6 +28,10 @@ public class AppUser {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<AppAuthority> roles;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_pic")
+    private Image profilePic;
+
     public String getUsername() {
         return username;
     }
@@ -74,5 +78,13 @@ public class AppUser {
         }
         roles.add(role);
         role.setAppUser(this);
+    }
+
+    public Image getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Image profilePic) {
+        this.profilePic = profilePic;
     }
 }
