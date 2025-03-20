@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1><span sec:authentication="principal.username"></span>'s Profile</h1>
+<h1 th:text="${user.username}">'s Profile</h1>
+<img th:src="${user.profilePic.url}" th:alt="${user.username} + '\'s profile picture'" style="border-radius: 50%;" width="200" height="200">
+<br>
+
+<div class="my-5">
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <h3>Profile picture updated successfully!</h3>
+    </div>
+    <div class="mx-auto w-25 " style="max-width:100%;">
+        <form th:action="@{/edit-picture}" th:object="${user}" method="POST" enctype="multipart/form-data">
+            <div th:if="${uploadSuccess != null && !uploadSuccess}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <p> Image upload failed</p>
+            </div>
+            <div class="input-group">
+                <input type="file" class="form-control" id="image" name="image" accept="image/*"
+                       aria-describedby="inputGroupFileAddon04"
+                       aria-label="Upload">
+                <button class="btn btn-outline-secondary" type="submit" disabled>Submit</button>
+            </div>
+        </form>
+        <script>
+            document.querySelector("input[type=file]").onchange = ({
+              target: { value },
+            }) => {
+              document.querySelector("button[type=submit]").disabled = !value;
+            };
+        </script>
+    </div>
+</div>
+<br>
 
 <!-- Spring Security automatically handles logout route -->
 <form action="#" th:action="@{/logout}" method="POST">
