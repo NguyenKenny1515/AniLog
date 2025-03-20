@@ -1,26 +1,21 @@
 package com.nguyenkenny.anilog.controller;
 
-import com.nguyenkenny.anilog.authenticationfacade.AuthenticationFacade;
-import com.nguyenkenny.anilog.dao.AppUserRepository;
 import com.nguyenkenny.anilog.entity.AppUser;
+import com.nguyenkenny.anilog.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.security.Principal;
 
 @Controller
 public class AuthenticationController {
 
-    private AuthenticationFacade authenticationFacade;
-    private AppUserRepository appUserRepository;
+    private AppUserService appUserService;
 
     @Autowired
-    public AuthenticationController(AuthenticationFacade authenticationFacade, AppUserRepository appUserRepository) {
-        this.authenticationFacade = authenticationFacade;
-        this.appUserRepository = appUserRepository;
+    public AuthenticationController(AppUserService appUserService) {
+        this.appUserService = appUserService;
     }
 
     @GetMapping("/login")
@@ -30,8 +25,7 @@ public class AuthenticationController {
 
     @GetMapping(value = {"", "/", "home"})
     public String showHomePage(Model model) {
-        Authentication authentication = authenticationFacade.getAuthenticatedUser();
-        AppUser user = appUserRepository.findByUsername(authentication.getName());
+        AppUser user = appUserService.getAuthenticatedUser();
 
         if (user != null) {
             model.addAttribute("user", user);

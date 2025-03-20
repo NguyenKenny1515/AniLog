@@ -6,6 +6,9 @@ import com.nguyenkenny.anilog.entity.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class ImageServiceImpl implements ImageService {
 
@@ -16,6 +19,17 @@ public class ImageServiceImpl implements ImageService {
     public ImageServiceImpl(CloudinaryService cloudinaryService, ImageRepository imageRepository) {
         this.cloudinaryService = cloudinaryService;
         this.imageRepository = imageRepository;
+    }
+
+    @Override
+    public Image save(Image newImage) {
+        return imageRepository.save(newImage);
+    }
+
+    @Override
+    public Image findById(UUID id) {
+        Optional<Image> result = imageRepository.findById(id);
+        return result.orElse(null);
     }
 
     @Override
@@ -31,7 +45,7 @@ public class ImageServiceImpl implements ImageService {
             if (image.getUrl() == null) {
                 return null;
             }
-            imageRepository.save(image);
+            save(image);
 
             return image;
         } catch (Exception e) {
