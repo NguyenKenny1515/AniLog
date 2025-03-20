@@ -44,9 +44,7 @@ public class ImageServiceImpl implements ImageService {
                 return null;
             }
 
-            Image image = new Image();
-            image.setName(imageDto.getName());
-            image.setUrl(cloudinaryService.uploadFile(imageDto.getFile(), "AniLog"));
+            Image image = new Image(imageDto.getName(), cloudinaryService.uploadFile(imageDto.getFile(), "AniLog"));
             if (image.getUrl() == null) {
                 return null;
             }

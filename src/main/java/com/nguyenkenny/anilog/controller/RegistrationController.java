@@ -64,21 +64,14 @@ public class RegistrationController {
 
         // If no validation errors, create the account!
         try {
-            AppUser newUser = new AppUser();
-            newUser.setUsername(userRegistrationDto.getUsername());
-            newUser.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
-            newUser.setEnabled(true);
-            newUser.setCreatedDatetime(ZonedDateTime.now());
+            AppUser newUser = new AppUser(userRegistrationDto.getUsername(),
+                    passwordEncoder.encode(userRegistrationDto.getPassword()), true, ZonedDateTime.now());
 
-            Image defaultPicture = new Image();
-            defaultPicture.setName("default_" + newUser.getUsername());
-            defaultPicture.setUrl(defaultPicUrl);
+            Image defaultPicture = new Image("default_" + newUser.getUsername(), defaultPicUrl);
             imageService.save(defaultPicture);
             newUser.setProfilePic(defaultPicture);
 
-            AppAuthority newAuthority = new AppAuthority();
-            newAuthority.setAuthority("ROLE_USER");
-            newAuthority.setAppUser(newUser);
+            AppAuthority newAuthority = new AppAuthority(newUser, "ROLE_USER");
             newUser.addRole(newAuthority);
 
             appUserService.save(newUser);

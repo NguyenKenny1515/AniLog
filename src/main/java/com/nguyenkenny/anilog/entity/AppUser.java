@@ -32,6 +32,16 @@ public class AppUser {
     @JoinColumn(name = "profile_pic")
     private Image profilePic;
 
+    public AppUser() {
+    }
+
+    public AppUser(String username, String password, boolean enabled, ZonedDateTime createdDatetime) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.createdDatetime = createdDatetime;
+    }
+
     public String getUsername() {
         return username;
     }

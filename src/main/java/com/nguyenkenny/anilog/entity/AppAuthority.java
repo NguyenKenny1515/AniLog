@@ -18,6 +18,14 @@ public class AppAuthority {
     @Column(name = "authority", nullable = false)
     private String authority;
 
+    public AppAuthority() {
+    }
+
+    public AppAuthority(AppUser appUser, String authority) {
+        this.appUser = appUser;
+        this.authority = authority;
+    }
+
     public int getId() {
         return id;
     }
