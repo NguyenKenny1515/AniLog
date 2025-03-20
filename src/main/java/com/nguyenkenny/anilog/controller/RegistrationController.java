@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Controller
 public class RegistrationController {
@@ -48,7 +47,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto,
+    public String registerUser(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto,
                                BindingResult bindingResult, Model model, RedirectAttributes redirAttr) {
         AppUser appUser = appUserService.findByUsername(userRegistrationDto.getUsername());
         if (appUser != null) {
@@ -67,7 +66,10 @@ public class RegistrationController {
             newUser.setEnabled(true);
             newUser.setCreatedDatetime(ZonedDateTime.now());
 
-            Image defaultPicture = imageService.findById(UUID.fromString("e2b9a4d3-241b-4763-9406-8e03281e5c41"));
+            Image defaultPicture = new Image();
+            defaultPicture.setName("default_" + newUser.getUsername());
+            defaultPicture.setUrl("https://res.cloudinary.com/dmzamfvly/image/upload/v1742401957/Default-Profile-Picture.png");
+            imageService.save(defaultPicture);
             newUser.setProfilePic(defaultPicture);
 
             AppAuthority newAuthority = new AppAuthority();
