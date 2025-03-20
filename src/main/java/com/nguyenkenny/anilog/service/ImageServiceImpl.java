@@ -33,6 +33,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void delete(Image image) {
+        imageRepository.deleteById(image.getId());
+    }
+
+    @Override
     public Image uploadImage(ImageDto imageDto) {
         try {
             if (imageDto.getName().isEmpty() || imageDto.getFile().isEmpty()) {

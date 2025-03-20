@@ -8,6 +8,7 @@ import com.nguyenkenny.anilog.service.AppUserService;
 import com.nguyenkenny.anilog.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,9 @@ public class RegistrationController {
     private AppUserService appUserService;
     private PasswordEncoder passwordEncoder;
     private ImageService imageService;
+
+    @Value("${anilog.default_profile_pic}")
+    private String defaultPicUrl;
 
     @Autowired
     public RegistrationController(AppUserService appUserService, PasswordEncoder passwordEncoder,
@@ -68,7 +72,7 @@ public class RegistrationController {
 
             Image defaultPicture = new Image();
             defaultPicture.setName("default_" + newUser.getUsername());
-            defaultPicture.setUrl("https://res.cloudinary.com/dmzamfvly/image/upload/v1742401957/Default-Profile-Picture.png");
+            defaultPicture.setUrl(defaultPicUrl);
             imageService.save(defaultPicture);
             newUser.setProfilePic(defaultPicture);
 

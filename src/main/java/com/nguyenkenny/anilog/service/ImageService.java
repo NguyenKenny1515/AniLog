@@ -11,5 +11,7 @@ public interface ImageService {
 
     Image findById(UUID id);
 
+    void delete(Image image);
+
     Image uploadImage(ImageDto imageDto);
 }
