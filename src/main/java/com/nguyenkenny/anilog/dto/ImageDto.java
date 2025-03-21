@@ -7,6 +7,11 @@ public class ImageDto {
     private String name;
     private MultipartFile file;
 
+    public ImageDto(String name, MultipartFile file) {
+        this.name = name;
+        this.file = file;
+    }
+
     public String getName() {
         return name;
     }

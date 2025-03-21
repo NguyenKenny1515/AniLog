@@ -34,9 +34,7 @@ public class UserController {
                 return "redirect:home";
             }
 
-            ImageDto imageDto = new ImageDto();
-            imageDto.setName(file.getOriginalFilename());
-            imageDto.setFile(file);
+            ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file);
             Image profilePic = imageService.uploadImage(imageDto);
 
             AppUser user = appUserService.getAuthenticatedUser();
