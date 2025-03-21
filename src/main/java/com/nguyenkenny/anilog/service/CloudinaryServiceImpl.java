@@ -2,6 +2,7 @@ package com.nguyenkenny.anilog.service;
 
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
-    public String uploadFile(MultipartFile file, String folderName) {
+    public String uploadImage(MultipartFile file, String folderName) {
         // Converts the image into a URL
         try {
             Map<Object, Object> options = new HashMap<>();
@@ -32,6 +33,16 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void deleteImage(String publicId) {
+        try {
+            var result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

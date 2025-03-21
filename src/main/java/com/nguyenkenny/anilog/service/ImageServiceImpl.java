@@ -4,16 +4,22 @@ import com.nguyenkenny.anilog.dao.ImageRepository;
 import com.nguyenkenny.anilog.dto.ImageDto;
 import com.nguyenkenny.anilog.entity.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ImageServiceImpl implements ImageService {
 
     private CloudinaryService cloudinaryService;
     private ImageRepository imageRepository;
+
+    @Value("${anilog.default_profile_pic}")
+    private String defaultPicUrl;
 
     @Autowired
     public ImageServiceImpl(CloudinaryService cloudinaryService, ImageRepository imageRepository) {
@@ -34,6 +40,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void delete(Image image) {
+        String url = image.getUrl();
+        if (!url.equals(defaultPicUrl)) {
+            Matcher matcher = Pattern.compile("(?<=v1/)(.*?)(?=\\?_a=)").matcher(url);
+            if (matcher.find()) {
+                String publicId = matcher.group(1);
+                cloudinaryService.deleteImage(publicId);
+            }
+        }
         imageRepository.deleteById(image.getId());
     }
 
@@ -44,7 +58,7 @@ public class ImageServiceImpl implements ImageService {
                 return null;
             }
 
-            Image image = new Image(imageDto.getName(), cloudinaryService.uploadFile(imageDto.getFile(), "AniLog"));
+            Image image = new Image(imageDto.getName(), cloudinaryService.uploadImage(imageDto.getFile(), "AniLog"));
             if (image.getUrl() == null) {
                 return null;
             }

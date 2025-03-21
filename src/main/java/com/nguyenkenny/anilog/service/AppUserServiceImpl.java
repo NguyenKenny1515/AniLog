@@ -14,11 +14,14 @@ public class AppUserServiceImpl implements AppUserService {
 
     private AppUserRepository appUserRepository;
     private AuthenticationFacade authenticationFacade;
+    private ImageService imageService;
 
     @Autowired
-    public AppUserServiceImpl(AppUserRepository appUserRepository, AuthenticationFacade authenticationFacade) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository, AuthenticationFacade authenticationFacade,
+                              ImageService imageService) {
         this.appUserRepository = appUserRepository;
         this.authenticationFacade = authenticationFacade;
+        this.imageService = imageService;
     }
 
     @Override
@@ -45,6 +48,9 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public void deleteById(String username) {
+        AppUser user = findByUsername(username);
+        // Deleting image directly instead of just relying on the cascade because we need to delete it from Cloudinary
+        imageService.delete(user.getProfilePic());
         appUserRepository.deleteById(username);
     }
 }
