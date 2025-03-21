@@ -35,13 +35,8 @@ public class UserController {
             }
 
             ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file);
-            Image profilePic = imageService.uploadImage(imageDto);
-
+            appUserService.changeProfilePicture(imageDto);
             AppUser user = appUserService.getAuthenticatedUser();
-            Image oldProfilePic = user.getProfilePic();
-            user.setProfilePic(profilePic);
-            imageService.delete(oldProfilePic);
-            appUserService.save(user);
 
             model.addAttribute("user", user);
             model.addAttribute("uploadSuccess", true);

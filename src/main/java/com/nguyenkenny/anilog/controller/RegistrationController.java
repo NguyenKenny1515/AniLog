@@ -1,15 +1,10 @@
 package com.nguyenkenny.anilog.controller;
 
 import com.nguyenkenny.anilog.dto.UserRegistrationDto;
-import com.nguyenkenny.anilog.entity.AppAuthority;
 import com.nguyenkenny.anilog.entity.AppUser;
-import com.nguyenkenny.anilog.entity.Image;
 import com.nguyenkenny.anilog.service.AppUserService;
-import com.nguyenkenny.anilog.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,18 +20,10 @@ import java.time.ZonedDateTime;
 public class RegistrationController {
 
     private AppUserService appUserService;
-    private PasswordEncoder passwordEncoder;
-    private ImageService imageService;
-
-    @Value("${anilog.default_profile_pic}")
-    private String defaultPicUrl;
 
     @Autowired
-    public RegistrationController(AppUserService appUserService, PasswordEncoder passwordEncoder,
-                                  ImageService imageService) {
+    public RegistrationController(AppUserService appUserService) {
         this.appUserService = appUserService;
-        this.passwordEncoder = passwordEncoder;
-        this.imageService = imageService;
     }
 
     @GetMapping("/registration")
@@ -64,17 +51,7 @@ public class RegistrationController {
 
         // If no validation errors, create the account!
         try {
-            AppUser newUser = new AppUser(userRegistrationDto.getUsername(),
-                    passwordEncoder.encode(userRegistrationDto.getPassword()), true, ZonedDateTime.now());
-
-            Image defaultPicture = new Image("default_" + newUser.getUsername(), defaultPicUrl);
-            imageService.save(defaultPicture);
-            newUser.setProfilePic(defaultPicture);
-
-            AppAuthority newAuthority = new AppAuthority(newUser, "ROLE_USER");
-            newUser.addRole(newAuthority);
-
-            appUserService.save(newUser);
+            appUserService.createNewUser(userRegistrationDto);
 
             model.addAttribute("user", new UserRegistrationDto());
             redirAttr.addFlashAttribute("success", true);
