@@ -2,9 +2,7 @@ package com.nguyenkenny.anilog.controller;
 
 import com.nguyenkenny.anilog.dto.ImageDto;
 import com.nguyenkenny.anilog.entity.AppUser;
-import com.nguyenkenny.anilog.entity.Image;
 import com.nguyenkenny.anilog.service.AppUserService;
-import com.nguyenkenny.anilog.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +16,10 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private ImageService imageService;
     private AppUserService appUserService;
 
     @Autowired
-    public UserController(ImageService imageService, AppUserService appUserService) {
-        this.imageService = imageService;
+    public UserController(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 
