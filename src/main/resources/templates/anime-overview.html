@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Anime - AniLog</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <script th:src="@{/js/anime-search.js}" defer></script>
+</head>
+<body>
+<h1>Anime</h1>
+
+<input type="text" id="anime-search-bar" placeholder="Search Anime..." onkeyup="searchAnime()">
+<div id="anime-results-dropdown"></div>
+
+<h2>Top Airing Anime</h2>
+<div class="anime-section" th:if="${groupedCurrent}">
+    <div class="anime-row" th:each="current : ${groupedCurrent}">
+        <div class="anime-card" th:each="anime : ${current}">
+            <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
+            <div class="anime-info">
+                <h3 th:text="${anime.title}"></h3>
+                <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
+                <p>Episodes: <span th:text="${anime.episodes} ?: '-'"></span></p>
+                <p>Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Top Upcoming Anime</h2>
+<div class="anime-section" th:if="${groupedUpcoming}">
+    <div class="anime-row" th:each="upcoming : ${groupedUpcoming}">
+        <div class="anime-card" th:each="anime : ${upcoming}">
+            <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
+            <div class="anime-info">
+                <h3 th:text="${anime.title}"></h3>
+                <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
+                <p>Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span></p>
+                <p>Premiers: <span
+                        th:text="${anime.season != null} ? ${#strings.capitalize(anime.season)} + ' ' + ${anime.year} : 'TBD'"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Top Anime 🐐</h2>
+<div class="anime-section" th:if="${groupedTop}">
+    <div class="anime-row" th:each="top : ${groupedTop}">
+        <div class="anime-card" th:each="anime : ${top}">
+            <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
+            <div class="anime-info">
+                <h3 th:text="${anime.title}"></h3>
+                <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
+                <p>Episodes: <span th:text="${anime.episodes} ?: '-'"></span></p>
+                <p>Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

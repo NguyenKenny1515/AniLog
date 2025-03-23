@@ -13,16 +13,40 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/anime")
 public class AnimeController {
 
-    private JikanService jikanService;
+    private final JikanService jikanService;
 
     @Autowired
     public AnimeController(JikanService jikanService) {
         this.jikanService = jikanService;
+    }
+
+    @GetMapping("/overview")
+    public String showOverviewPage(Model model) throws InterruptedException {
+        List<Anime> top = jikanService.getTopAnime();
+        List<Anime> current = jikanService.getTopAiringAnime();
+        List<Anime> upcoming = jikanService.getTopUpcomingAnime();
+
+        List<List<Anime>> groupedTop = IntStream.range(0, (top.size() + 4) / 5)
+                .mapToObj(i -> top.subList(i * 5, Math.min((i + 1) * 5, top.size())))
+                .toList();
+        List<List<Anime>> groupedCurrent = IntStream.range(0, (current.size() + 4) / 5)
+                .mapToObj(i -> current.subList(i * 5, Math.min((i + 1) * 5, current.size())))
+                .toList();
+        List<List<Anime>> groupedUpcoming = IntStream.range(0, (upcoming.size() + 4) / 5)
+                .mapToObj(i -> upcoming.subList(i * 5, Math.min((i + 1) * 5, upcoming.size())))
+                .toList();
+
+        model.addAttribute("groupedTop", groupedTop);
+        model.addAttribute("groupedCurrent", groupedCurrent);
+        model.addAttribute("groupedUpcoming", groupedUpcoming);
+
+        return "anime-overview";
     }
 
     @GetMapping("/search")
