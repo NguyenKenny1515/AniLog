@@ -22,7 +22,6 @@
     color: #333;
 }
 
-/* Broadcast year styling */
 .result-type-year {
     font-size: 12px;
     color: #777;
@@ -79,5 +78,66 @@
 .page-numbers {
     font-size: 16px;
     font-weight: bold;
-    margin: 0 10px; /* Space between buttons */
+    margin: 0 10px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+.anime-section {
+    margin: 20px 0;
+}
+
+.anime-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.anime-card {
+    width: 200px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.anime-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.anime-info h3 {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.anime-info p {
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+.anime-card:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.anime-details {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    transition: opacity 0.3s ease;
 }
