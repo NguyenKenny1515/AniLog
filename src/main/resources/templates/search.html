@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Search Anime - AniLog</title>
-    <link th:href="@{/css/anime-search-dropdown.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
     <script th:src="@{/js/anime-search.js}" defer></script>
 </head>
 <body>
@@ -25,16 +25,15 @@
     <tbody>
     <tr th:each="anime : ${results}">
         <td>
-            <img th:src="${anime.images.webp.imageUrl}" th:alt="'Picture of ' + *{anime.title}" width="100"
-                 height="100">
+            <img th:src="${anime.images.webp.imageUrl}" th:alt="{anime.title}" width="100" height="100">
         </td>
         <td>
             <strong th:text="${anime.title}"></strong>
             <p th:text="${#strings.abbreviate(anime.synopsis, 150)}">...read more</p>
         </td>
-        <td th:text="${anime.type}"></td>
+        <td th:text="${anime.type} ?: 'N/A'"></td>
         <td th:text="${anime.episodes} ?: '-'"></td>
-        <td th:text="${anime.score == 0} ? ${anime.score} : 'N/A'"></td>
+        <td th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></td>
     </tr>
     </tbody>
 </table>
