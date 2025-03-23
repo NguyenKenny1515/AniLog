@@ -1,0 +1,83 @@
+#anime-results-dropdown {
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    display: none;
+    width: 200px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.result-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Broadcast year styling */
+.result-type-year {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+}
+
+/* Hide details by default */
+.dropdown-item .result-details {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+    padding: 12px;
+}
+
+.dropdown-item:hover .result-details {
+    opacity: 1;
+    max-height: 50px;
+}
+
+.view-all {
+    font-weight: bold;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.page-numbers {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 10px; /* Space between buttons */
+}

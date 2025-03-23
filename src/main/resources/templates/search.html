@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Anime - AniLog</title>
+    <link th:href="@{/css/anime-search-dropdown.css}" rel="stylesheet">
+    <script th:src="@{/js/anime-search.js}" defer></script>
+</head>
+<body>
+<h1>Anime Search</h1>
+
+<input type="text" id="anime-search-bar" placeholder="Search Anime..." onkeyup="searchAnime()">
+<div id="anime-results-dropdown"></div>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Episodes</th>
+        <th>Score</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="anime : ${results}">
+        <td>
+            <img th:src="${anime.images.webp.imageUrl}" th:alt="'Picture of ' + *{anime.title}" width="100"
+                 height="100">
+        </td>
+        <td>
+            <strong th:text="${anime.title}"></strong>
+            <p th:text="${#strings.abbreviate(anime.synopsis, 150)}">...read more</p>
+        </td>
+        <td th:text="${anime.type}"></td>
+        <td th:text="${anime.episodes} ?: '-'"></td>
+        <td th:text="${anime.score == 0} ? ${anime.score} : 'N/A'"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="pagination">
+    <a th:if="${pagination.currentPage > 1}"
+       th:href="@{/anime/search(q=${query}, page=${pagination.currentPage - 1})}"
+       class="prev">Previous</a>
+
+    <span class="page-numbers">
+        <span th:text="${pagination.currentPage}"></span> /
+        <span th:text="${pagination.lastVisiblePage}"></span>
+    </span>
+
+    <a th:if="${pagination.hasNextPage}"
+       th:href="@{/anime/search(q=${query}, page=${pagination.currentPage + 1})}"
+       class="next">Next</a>
+</div>
+</body>
+</html>

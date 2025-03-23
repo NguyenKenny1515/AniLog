@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class JikanService {
 
@@ -26,12 +23,11 @@ public class JikanService {
                 .block();
     }
 
-    public List<Anime> searchAnimeByTitle(String query) {
+    public AnimeListResponse searchAnimeByTitle(String query, int page) {
         return webClient.get()
-                .uri("/anime?q=" + query)
+                .uri("/anime?q=" + query + "&page=" + page)
                 .retrieve()
                 .bodyToMono(AnimeListResponse.class)
-                .map(AnimeListResponse::getData)
                 .block();
     }
 }
