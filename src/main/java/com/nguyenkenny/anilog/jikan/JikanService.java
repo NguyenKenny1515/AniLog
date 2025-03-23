@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.*;
+
 @Service
 public class JikanService {
 
@@ -29,5 +31,36 @@ public class JikanService {
                 .retrieve()
                 .bodyToMono(AnimeListResponse.class)
                 .block();
+    }
+
+    public List<Anime> fetchBasicListOfAnime(String uri) {
+        return webClient.get()
+                .uri(uri + "?limit=15")
+                .retrieve()
+                .bodyToMono(AnimeListResponse.class)
+                .map(AnimeListResponse::getData)
+                .block();
+    }
+
+    public List<Anime> getTopAnime() {
+        List<Anime> animeList = fetchBasicListOfAnime("/top/anime");
+        animeList.sort(Comparator.comparingDouble(Anime::getScore).reversed());
+
+        return animeList;
+    }
+
+    public List<Anime> getTopAiringAnime() {
+        List<Anime> animeList = fetchBasicListOfAnime("/seasons/now");
+        animeList.sort(Comparator.comparingDouble(Anime::getScore).reversed());
+
+        return animeList;
+    }
+
+    public List<Anime> getTopUpcomingAnime() {
+        List<Anime> animeList = fetchBasicListOfAnime("/seasons/upcoming");
+        animeList = new ArrayList<>(new HashSet<>(animeList));
+        animeList.sort(Comparator.comparingDouble(Anime::getPopularity));
+
+        return animeList;
     }
 }
