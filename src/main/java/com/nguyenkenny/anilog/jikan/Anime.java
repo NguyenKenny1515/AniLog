@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ public class Anime {
 
     @JsonProperty("mal_id")
     private int malId;
-    private Images images;
+    private Image images;
     private Trailer trailer;
     @JsonProperty("title")
     private String title;
@@ -44,9 +45,28 @@ public class Anime {
     private List<Streaming> streaming;
     private List<Relation> relations;
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+        Anime anime = (Anime) object;
+        return malId == anime.malId && episodes == anime.episodes && airing == anime.airing &&
+                Double.compare(score, anime.score) == 0 && rank == anime.rank && popularity == anime.popularity &&
+                year == anime.year && Objects.equals(title, anime.title) &&
+                Objects.equals(titleEnglish, anime.titleEnglish) &&
+                Objects.equals(titleJapanese, anime.titleJapanese) && Objects.equals(type, anime.type) &&
+                Objects.equals(source, anime.source) && Objects.equals(status, anime.status) &&
+                Objects.equals(rating, anime.rating) && Objects.equals(season, anime.season);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(malId, title, titleEnglish, titleJapanese, type, source, episodes, status, airing, rating,
+                score, rank, popularity, season, year);
+    }
+
     @Getter
     @Setter
-    public static class Images {
+    public static class Image {
         private Jpg jpg;
         private Webp webp;
     }
