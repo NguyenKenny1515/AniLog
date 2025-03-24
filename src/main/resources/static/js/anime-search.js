@@ -21,7 +21,8 @@ function searchAnime() {
                 let results = data.slice(0, maxResults);
 
                 results.forEach(anime => {
-                    let item = document.createElement("div");
+                    let item = document.createElement("a");
+                    item.href = `/anime/${anime.mal_id}`;
                     item.classList.add("dropdown-item");
 
                     let img = document.createElement("img");
@@ -40,19 +41,21 @@ function searchAnime() {
                     typeAndYear.classList.add("result-type-year");
                     typeAndYear.innerText = `(${anime.type}, ${anime.year || anime.aired.string.match(/\d{4}/)[0]})`;
 
-                    let details = document.createElement("div");
-                    details.classList.add("result-details");
-                    details.innerHTML = `
+                    textContainer.appendChild(title);
+                    textContainer.appendChild(typeAndYear);
+
+                    item.appendChild(img);
+                    item.appendChild(textContainer);
+
+                    // Show extra info on hover
+                    let extraInfo = document.createElement("div");
+                    extraInfo.classList.add("extra-info");
+                    extraInfo.innerHTML = `
+                        <div><strong>Aired:</strong> ${anime.aired.string}</div>
                         <div><strong>Score:</strong> ${anime.score || "N/A"}</div>
                         <div><strong>Status:</strong> ${anime.status}</div>
                     `;
-
-                    textContainer.appendChild(title);
-                    textContainer.appendChild(typeAndYear);
-                    textContainer.appendChild(details);
-                    item.appendChild(img);
-                    item.appendChild(textContainer);
-                    item.onclick = () => window.location.href = `/details?id=${anime.id}`;
+                    item.appendChild(extraInfo);
 
                     dropdown.appendChild(item);
                 });
@@ -71,14 +74,6 @@ function searchAnime() {
     }, 300);
 }
 
-function enterPressedSearch() {
-    let query = document.getElementById("anime-search-bar").value.trim();
-    if (query.length === 0) return;
-
-    // Redirect to search results page
-    window.location.href = `/anime/search?q=${encodeURIComponent(query)}`;
-}
-
 // Hide dropdown when clicking outside
 document.addEventListener("click", function(event) {
     let dropdown = document.getElementById("anime-results-dropdown");
@@ -93,3 +88,11 @@ document.getElementById("anime-search-bar").addEventListener("keypress", functio
         enterPressedSearch();
     }
 });
+
+function enterPressedSearch() {
+    let query = document.getElementById("anime-search-bar").value.trim();
+    if (query.length === 0) return;
+
+    // Redirect to search results page
+    window.location.href = `/anime/search?q=${encodeURIComponent(query)}`;
+}
