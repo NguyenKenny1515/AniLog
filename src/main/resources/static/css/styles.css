@@ -127,17 +127,7 @@ body {
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.anime-details {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    transition: opacity 0.3s ease;
+.anime-detail img {
+    object-fit: cover;
+    max-height: 100%;
 }

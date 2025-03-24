@@ -6,10 +6,7 @@ import com.nguyenkenny.anilog.jikan.JikanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +44,19 @@ public class AnimeController {
         model.addAttribute("groupedUpcoming", groupedUpcoming);
 
         return "anime-overview";
+    }
+
+    @GetMapping("/{id}")
+    public String showDetailsPage(@PathVariable int id, Model model) {
+        Anime anime = jikanService.getAnimeById(id);
+
+        if (anime == null) {
+            throw new RuntimeException("Anime not found - " + id);
+        }
+
+        model.addAttribute("anime", anime);
+
+        return "anime-details";
     }
 
     @GetMapping("/search")
