@@ -153,7 +153,8 @@ public class Anime {
     @Setter
     public static class Relation {
         private String relation;
-        private List<Entry> entry;
+        @JsonProperty("entry")
+        private List<Entry> entries;
     }
 
     @Getter
