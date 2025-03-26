@@ -23,15 +23,8 @@ public class AuthenticationController {
         return "login";
     }
 
-    @GetMapping(value = {"", "/", "home"})
-    public String showHomePage(Model model) {
-        AppUser user = appUserService.getAuthenticatedUser();
-
-        if (user != null) {
-            model.addAttribute("user", user);
-            return "home";
-        }
-
+    @GetMapping(value = {"", "/"})
+    public String showLandingPage(Model model) {
         return "landing-page";
     }
 

@@ -24,7 +24,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/", "/home", "/registration", "/error").permitAll()
+                                .requestMatchers("/", "/registration", "/error").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
@@ -32,7 +32,7 @@ public class SecurityConfig {
                         form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
-                                .defaultSuccessUrl("/home", true)
+                                .defaultSuccessUrl("/profile", true)
                                 .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll)

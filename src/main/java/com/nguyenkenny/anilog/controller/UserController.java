@@ -23,11 +23,18 @@ public class UserController {
         this.appUserService = appUserService;
     }
 
+    @GetMapping("/profile")
+    public String getProfilePage(Model model) {
+        AppUser user = appUserService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
     @PostMapping("/edit-picture")
     public String editProfilePicture(@RequestParam("image") MultipartFile file, Model model) {
         try {
             if (file.isEmpty()) {
-                return "redirect:home";
+                return "redirect:profile";
             }
 
             ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file);
@@ -40,7 +47,7 @@ public class UserController {
             model.addAttribute("uploadSuccess", false);
         }
 
-        return "redirect:home";
+        return "redirect:profile";
     }
 
     @GetMapping("/admin/list")
