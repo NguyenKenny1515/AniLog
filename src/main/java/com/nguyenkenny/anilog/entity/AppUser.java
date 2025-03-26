@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "users")
@@ -23,16 +25,20 @@ public class AppUser {
     @Column(name = "created_datetime", columnDefinition = "zoned_date_time")
     private ZonedDateTime createdDatetime;
 
-    @OneToMany(mappedBy = "appUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AppAuthority> roles;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_pic")
     private Image profilePic;
 
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapKey(name = "malId")
+    private Map<Integer, AnimeEntry> animeEntries;
+
     public AppUser() {
+        this.roles = new ArrayList<>();
+        this.animeEntries = new HashMap<>();
     }
 
     public AppUser(String username, String password, boolean enabled, ZonedDateTime createdDatetime) {
@@ -40,6 +46,8 @@ public class AppUser {
         this.password = password;
         this.enabled = enabled;
         this.createdDatetime = createdDatetime;
+        this.roles = new ArrayList<>();
+        this.animeEntries = new HashMap<>();
     }
 
     public String getUsername() {
@@ -83,11 +91,21 @@ public class AppUser {
     }
 
     public void addRole(AppAuthority role) {
-        if (roles == null) {
-            roles = new ArrayList<>();
-        }
         roles.add(role);
         role.setAppUser(this);
+    }
+
+    public Map<Integer, AnimeEntry> getAnimeEntries() {
+        return animeEntries;
+    }
+
+    public void setAnimeEntries(Map<Integer, AnimeEntry> animeEntries) {
+        this.animeEntries = animeEntries;
+    }
+
+    public void addAnimeEntry(AnimeEntry entry) {
+        animeEntries.put(entry.getMalId(), entry);
+        entry.setAppUser(this);
     }
 
     public Image getProfilePic() {
