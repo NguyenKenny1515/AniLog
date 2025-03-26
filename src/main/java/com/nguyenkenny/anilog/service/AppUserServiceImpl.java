@@ -54,6 +54,12 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser getAuthenticatedUserWithEntries() {
+        String username = authenticationFacade.getAuthenticatedUser().getName();
+        return appUserRepository.findByUsernameFetchEntries(username);
+    }
+
+    @Override
     public AppUser save(AppUser newUser) {
         return appUserRepository.save(newUser);
     }

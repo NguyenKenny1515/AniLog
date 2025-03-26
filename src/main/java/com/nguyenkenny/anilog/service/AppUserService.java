@@ -14,6 +14,8 @@ public interface AppUserService {
 
     AppUser getAuthenticatedUser();
 
+    AppUser getAuthenticatedUserWithEntries();
+
     AppUser save(AppUser newUser);
 
     void deleteById(String username);
