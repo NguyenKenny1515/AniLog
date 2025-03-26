@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>AniLog</title>
@@ -8,7 +8,12 @@
 </head>
 <body>
 <h1>AniLog</h1>
-<a class="btn btn-primary" th:href="@{/login}" role="button">Login</a>
-<a class="btn btn-primary" th:href="@{/registration}" role="button">Register</a>
+<div sec:authorize="isAuthenticated()">
+    <a class="btn btn-primary" th:href="@{/profile}" role="button">Your Profile</a>
+</div>
+<div sec:authorize="isAnonymous()">
+    <a class="btn btn-primary" th:href="@{/login}" role="button">Login</a>
+    <a class="btn btn-primary" th:href="@{/registration}" role="button">Register</a>
+</div>
 </body>
 </html>
