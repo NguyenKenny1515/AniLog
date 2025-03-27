@@ -3,17 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>AniLog</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script th:src="@{/js/dark-mode.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
-<body>
-<h1>AniLog</h1>
-<div sec:authorize="isAuthenticated()">
-    <a class="btn btn-primary" th:href="@{/profile}" role="button">Your Profile</a>
+<body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+<div class="toggle-container">
+    <button id="toggle-dark-mode" class="toggle-btn">🌙 Dark Mode</button>
 </div>
-<div sec:authorize="isAnonymous()">
-    <a class="btn btn-primary" th:href="@{/login}" role="button">Login</a>
-    <a class="btn btn-primary" th:href="@{/registration}" role="button">Register</a>
+
+<div class="text-center">
+    <h1 class="logo">✨ A n i L o g ✨</h1>
+    <p class="lead">A simple, minimalistic anime tracker.</p>
+
+    <div>
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-primary btn-lg me-2" th:href="@{/profile}" role="button">Your Profile</a>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <a class="btn btn-primary btn-lg me-2" th:href="@{/login}" role="button">Login</a>
+            <a class="btn btn-primary btn-lg" th:href="@{/registration}" role="button">Register</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
