@@ -8,6 +8,8 @@ import com.nguyenkenny.anilog.jikan.JikanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,38 @@ public class AnimeEntryServiceImpl implements AnimeEntryService {
         animeEntryRepository.save(animeEntry);
         appUser.addAnimeEntry(animeEntry);
         return animeEntry;
+    }
+
+    @Override
+    public Map<String, Double> calculateAnimeStats(Map<Integer, AnimeEntry> animeEntries) {
+        Map<String, Double> animeStats = new HashMap<>(Map.of(
+                "averageUserScore", 0.0,
+                "totalEntries", 0.0,
+                "totalEpisodesWatched", 0.0,
+                "totalWatching", 0.0,
+                "totalCompleted", 0.0,
+                "totalDropped", 0.0,
+                "totalPlanned", 0.0
+        ));
+
+        for (AnimeEntry animeEntry : animeEntries.values()) {
+            animeStats.put("averageUserScore", animeStats.get("averageUserScore") + animeEntry.getUserScore());
+            animeStats.put("totalEntries", animeStats.get("totalEntries") + 1);
+            animeStats.put("totalEpisodesWatched", animeStats.get("totalEpisodesWatched") + 1);
+
+            switch(animeEntry.getEntryStatus()) {
+                case WATCHING -> animeStats.put("totalWatching", animeStats.get("totalWatching") + 1);
+                case COMPLETED -> animeStats.put("totalCompleted", animeStats.get("totalCompleted") + 1);
+                case DROPPED -> animeStats.put("totalDropped", animeStats.get("totalDropped") + 1);
+                case PLANNED -> animeStats.put("totalPlanned", animeStats.get("totalPlanned") + 1);
+            }
+        }
+
+        if (animeStats.get("totalEntries") != 0) {
+            animeStats.put("averageUserScore", animeStats.get("averageUserScore") / animeStats.get("totalEntries"));
+        }
+
+        return animeStats;
     }
 
     private void setValues(AnimeEntry animeEntry, Anime anime) {
