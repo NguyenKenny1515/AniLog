@@ -36,7 +36,8 @@ public class AnimeEntryController {
     }
 
     @PatchMapping("/{id}")
-    public String updateAnimeEntry(@PathVariable int id, @ModelAttribute AnimeEntry animeEntry) {
+    public String updateAnimeEntry(@PathVariable int id, @ModelAttribute AnimeEntry animeEntry,
+                                   @RequestParam(value = "source") String source) {
         AnimeEntry existingEntry = animeEntryService.findById(id);
 
         if (animeEntry == null) {
@@ -49,11 +50,14 @@ public class AnimeEntryController {
 
         animeEntryService.save(existingEntry);
 
+        if (source.equals("profile")) {
+            return "redirect:/profile";
+        }
         return "redirect:/anime/" + existingEntry.getMalId();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteAnimeEntry(@PathVariable int id) {
+    public String deleteAnimeEntry(@PathVariable int id, @RequestParam(value = "source") String source) {
         AnimeEntry animeEntry = animeEntryService.findById(id);
 
         if (animeEntry == null) {
@@ -64,6 +68,9 @@ public class AnimeEntryController {
 
         animeEntryService.delete(animeEntry);
 
+        if (source.equals("profile")) {
+            return "redirect:/profile";
+        }
         return "redirect:/anime/" + malId;
     }
 }

@@ -2,6 +2,8 @@ package com.nguyenkenny.anilog.controller;
 
 import com.nguyenkenny.anilog.dto.ImageDto;
 import com.nguyenkenny.anilog.entity.AppUser;
+import com.nguyenkenny.anilog.enums.EntryStatus;
+import com.nguyenkenny.anilog.service.AnimeEntryService;
 import com.nguyenkenny.anilog.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,21 +14,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
 
     private AppUserService appUserService;
+    private AnimeEntryService animeEntryService;
 
     @Autowired
-    public UserController(AppUserService appUserService) {
+    public UserController(AppUserService appUserService, AnimeEntryService animeEntryService) {
         this.appUserService = appUserService;
+        this.animeEntryService = animeEntryService;
     }
 
     @GetMapping("/profile")
     public String getProfilePage(Model model) {
-        AppUser user = appUserService.getAuthenticatedUser();
+        AppUser user = appUserService.getAuthenticatedUserWithEntries();
+        Map<String, Double> animeStats = animeEntryService.calculateAnimeStats(user.getAnimeEntries());
         model.addAttribute("user", user);
+        model.addAttribute("animeEntries", user.getAnimeEntries().values());
+        model.addAttribute("animeStats", animeStats);
+        model.addAttribute("entryStatuses", EntryStatus.values());
+
         return "profile";
     }
 
