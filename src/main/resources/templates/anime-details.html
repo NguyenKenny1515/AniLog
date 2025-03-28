@@ -3,164 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${anime.title} + ' - AniLog'"></title>
+
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <script th:src="@{/js/add-anime-entry.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
 </head>
 <body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
 <div class="container mt-5">
-    <div class="card shadow-lg">
-        <div class="row g-0">
-            <div class="col-md-4 d-flex justify-content-center align-items-center">
-                <img th:src="${anime.images.webp.largeImageUrl}" class="img-fluid rounded shadow"
-                     style="max-width: 250px; max-height: 350px; object-fit: cover;" th:alt="${anime.title}">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img th:src="${anime.images.webp.largeImageUrl}" class="img-fluid rounded shadow"
+                 style="max-width: 350px; max-height: 500px; object-fit: cover;" th:alt="${anime.title}">
 
-                <div class="card-body text-center">
-                    <h3>Track Anime</h3>
+            <div class="p-3 border rounded bg-light mt-3">
+                <h5 class="mb-3">Track Anime</h5>
 
-                    <div>
-                        <div th:if="${animeEntry.id == 0}">
-                            <form th:action="@{/entries}" th:object="${animeEntry}" method="POST">
-                                <input type="hidden" th:field="${animeEntry.appUser}"/>
-                                <input type="hidden" th:field="${animeEntry.malId}"/>
+                <div th:if="${animeEntry.id == 0}">
+                    <form th:action="@{/entries}" th:object="${animeEntry}" method="POST">
+                        <input type="hidden" th:field="${animeEntry.appUser}"/>
+                        <input type="hidden" th:field="${animeEntry.malId}"/>
 
-                                <label>Status:</label>
-                                <select name="status" class="form-select" th:field="${animeEntry.entryStatus}">
-                                    <option th:each="status : ${entryStatuses}" th:value="${status}"
-                                            th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"></option>
-                                </select>
+                        <label class="small">Status:</label>
+                        <select name="status" class="form-select form-select-sm mb-2 w-50 mx-auto"
+                                th:field="${animeEntry.entryStatus}">
+                            <option th:each="status : ${entryStatuses}" th:value="${status}"
+                                    th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"></option>
+                        </select>
 
-                                <label>Episodes Watched:</label>
-                                <input type="number" class="form-control episodes-watched"
-                                       th:field="${animeEntry.episodesWatched}" min="0"
-                                       th:max="${anime.episodes}">
+                        <label class="small">Episodes Watched:</label>
+                        <input type="number" class="form-control form-control-sm mb-2 w-50 mx-auto"
+                               th:field="${animeEntry.episodesWatched}" min="0" th:max="${anime.episodes}">
 
-                                <label>Score:</label>
-                                <input type="number" class="form-control user-score" th:field="${animeEntry.userScore}"
-                                       min="0" max="10" step="1">
+                        <label class="small">Score:</label>
+                        <input type="number" class="form-control form-control-sm mb-2 w-50 mx-auto"
+                               th:field="${animeEntry.userScore}" min="0" max="10" step="1">
 
-                                <button type="submit" class="btn btn-primary mt-2"> Add</button>
-                            </form>
-                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                    </form>
+                </div>
 
-                        <!-- Update and Delete -->
-                        <div th:if="${animeEntry.id != 0}">
-                            <p>Edit Status</p>
-                            <form id="entry-update-form" th:action="@{/entries/{id}(id=${animeEntry.id})}"
-                                  th:object="${animeEntry}" th:method="PATCH">
-                                <input type="hidden" name="source" value="detail">
+                <div th:if="${animeEntry.id != 0}">
+                    <form id="entry-update-form" th:action="@{/entries/{id}(id=${animeEntry.id})}"
+                          th:object="${animeEntry}" th:method="PATCH">
+                        <input type="hidden" name="source" value="detail">
 
-                                <label>Status:</label>
-                                <select name="status" class="form-select" th:field="${animeEntry.entryStatus}">
-                                    <option th:each="status : ${entryStatuses}"
-                                            th:value="${status}"
-                                            th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"
-                                            th:selected="${status == animeEntry.status}"></option>
-                                </select>
+                        <label class="small">Status:</label>
+                        <select name="status" class="form-select form-select-sm mb-2 w-50 mx-auto"
+                                th:field="${animeEntry.entryStatus}">
+                            <option th:each="status : ${entryStatuses}" th:value="${status}"
+                                    th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"></option>
+                        </select>
 
-                                <label>Episodes Watched:</label>
-                                <input type="number" class="form-control episodes-watched" min="0"
-                                       th:field="${animeEntry.episodesWatched}"
-                                       th:value="${animeEntry.episodesWatched}"
-                                       th:max="${anime.episodes}">
+                        <label class="small">Episodes Watched:</label>
+                        <input type="number" class="form-control form-control-sm mb-2 w-50 mx-auto" min="0"
+                               th:field="${animeEntry.episodesWatched}" th:max="${anime.episodes}">
 
-                                <label>Score:</label>
-                                <input type="number" class="form-control user-score" th:field="${animeEntry.userScore}"
-                                       min="0" max="10" step="1"
-                                       th:value="${animeEntry.userScore}">
+                        <label class="small">Score:</label>
+                        <input type="number" class="form-control form-control-sm mb-2 w-50 mx-auto"
+                               th:field="${animeEntry.userScore}" min="0" max="10" step="1">
 
-                                <button type="submit" class="btn btn-primary mt-2" onclick="submitUpdateForm()">Update
-                                </button>
-                            </form>
-
-
+                        <div class="d-flex justify-content-center gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm" onclick="submitUpdateForm()">Update
+                            </button>
                             <form th:action="@{/entries/{id}(id=${animeEntry.id})}" method="POST">
                                 <input type="hidden" name="_method" value="DELETE"/>
                                 <input type="hidden" name="source" value="profile">
-                                <button type="submit" class="btn btn-danger mt-2">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </div>
-                    </div>
-
-                    <p id="success-message" class="text-success mt-2" style="display: none;"></p>
-                </div>
-            </div>
-
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h2 class="card-title" th:text="${anime.title}"></h2>
-                    <h3 class="card-title" th:text="'Score: ' + ${anime.score}"></h3>
-                    <p><strong>Synopsis: </strong> <span th:text="${anime.synopsis}"></span></p>
-
-                    <p><strong>English Title: </strong> <span th:text="${anime.titleEnglish}"></span></p>
-                    <p><strong>Japanese Title: </strong> <span th:text="${anime.titleJapanese}"></span></p>
-                    <p><strong>Type: </strong> <span th:text="${anime.type} ?: 'N/A'"></span></p>
-                    <p><strong>Episodes: </strong> <span
-                            th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span></p>
-                    <p><strong>Status: </strong> <span th:text="${anime.status}"></span></p>
-                    <p><strong>Aired: </strong> <span th:text="${anime.aired.airedDates}"></span></p>
-                    <p><strong>Premiered: </strong> <span
-                            th:text="${anime.season != null} ? ${#strings.capitalize(anime.season)} + ' ' + ${anime.year} : 'TBD'"></span>
-                    </p>
-                    <p><strong>Studios: </strong>
-                        <span th:each="studio, iterStat : ${anime.studios}">
-                            <span th:text="${studio.name}"></span><span th:if="${!iterStat.last}">, </span>
-                        </span>
-                    </p>
-                    <p><strong>Source: </strong> <span th:text="${anime.source}"></span></p>
-                    <p><strong>Genres: </strong>
-                        <span th:each="genre, iterStat : ${anime.genres}">
-                            <span th:text="${genre.name}"></span><span th:if="${!iterStat.last}">, </span>
-                        </span>
-                    </p>
-                    <p><strong>Themes: </strong>
-                        <span th:each="theme, iterStat : ${anime.themes}">
-                            <span th:text="${theme.name}"></span><span th:if="${!iterStat.last}">, </span>
-                        </span>
-                    </p>
-                    <p><strong>Duration: </strong> <span th:text="${anime.duration}"></span></p>
-                    <p><strong>Rating: </strong> <span th:text="${anime.rating}"></span></p>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <div th:if="${anime.trailer.url != null}" class="mt-4 card-body text-center">
-            <h3>Trailer</h3>
-            <iframe th:src="${anime.trailer.embedUrl}" width="50%" height="315" allowfullscreen></iframe>
-        </div>
+        <div class="col-md-8">
+            <h2 class="text-primary" th:text="${anime.title}"></h2>
+            <h4 th:text="'Score: ' + ${anime.score}"></h4>
+            <p><strong>Synopsis: </strong> <span th:text="${anime.synopsis}"></span></p>
 
-        <div class="mt-4 card-body text-center">
-            <h3>Opening Songs</h3>
-            <ul th:if="${anime.songs.openings != null}" class="list-unstyled">
-                <li th:each="song : ${anime.songs.openings}" th:text="${song}"></li>
+            <p><strong>English Title: </strong> <span th:text="${anime.titleEnglish}"></span></p>
+            <p><strong>Japanese Title: </strong> <span th:text="${anime.titleJapanese}"></span></p>
+            <p><strong>Type: </strong> <span th:text="${anime.type} ?: 'N/A'"></span></p>
+            <p><strong>Episodes: </strong> <span th:text="${anime.episodes ?: 'TBD'}"></span></p>
+            <p><strong>Status: </strong> <span th:text="${anime.status}"></span></p>
+            <p><strong>Aired: </strong> <span th:text="${anime.aired.airedDates}"></span></p>
+            <p><strong>External Links:</strong></p>
+            <ul class="list-unstyled">
+                <li th:each="site : ${anime.external}">
+                    <a th:href="${site.url}" class="text-decoration-none" target="_blank">
+                        <span th:text="${site.name}"></span>
+                    </a>
+                </li>
             </ul>
-
-            <h3>Ending Songs</h3>
-            <ul th:if="${anime.songs.endings != null}" class="list-unstyled">
-                <li th:each="song : ${anime.songs.endings}" th:text="${song}"></li>
+            <p><strong>Streaming On:</strong></p>
+            <ul class="list-unstyled">
+                <li th:each="site : ${anime.streaming}">
+                    <a th:href="${site.url}" class="text-decoration-none" target="_blank">
+                        <span th:text="${site.name}"></span>
+                    </a>
+                </li>
             </ul>
         </div>
+    </div>
 
-        <div class="mt-4 card-body text-center">
-            <h3>Related Entries</h3>
-            <div class="row justify-content-center" th:each="relation : ${anime.relations}">
-                <h4 th:if="${relation.relation} != 'Adaptation'" th:text="${relation.relation}"></h4>
-                <div th:if="${relation.relation} != 'Adaptation'" class="col-md-3 mb-3"
-                     th:each="entry : ${relation.entries}">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h6 class="card-title" th:text="${entry.name}"></h6>
-                            <a th:href="@{/anime/{id}(id=${entry.malId})}"
-                               class="btn btn-sm btn-outline-primary">View</a>
-                        </div>
+    <!-- Trailer Section -->
+    <div th:if="${anime.trailer.url != null}" class="mt-4 text-center">
+        <h3 class="text-black">Trailer</h3>
+        <iframe th:src="${anime.trailer.embedUrl}" width="560" height="315" allowfullscreen></iframe>
+    </div>
+
+    <!-- Anime Songs Section -->
+    <div class="mt-4 text-center">
+        <h3 class="text-black">Opening Songs</h3>
+        <ul th:if="${anime.songs.openings != null}" class="list-unstyled">
+            <li th:each="song : ${anime.songs.openings}" th:text="${song}"></li>
+        </ul>
+
+        <h3 class="text-black">Ending Songs</h3>
+        <ul th:if="${anime.songs.endings != null}" class="list-unstyled">
+            <li th:each="song : ${anime.songs.endings}" th:text="${song}"></li>
+        </ul>
+    </div>
+
+    <!-- Related Entries Section -->
+    <div class="mt-4 text-center">
+        <h3 class="text-black">Related Entries</h3>
+        <div class="row justify-content-center" th:each="relation : ${anime.relations}">
+            <h4 th:if="${relation.relation} != 'Adaptation'" th:text="${relation.relation}"></h4>
+            <div th:if="${relation.relation} != 'Adaptation'" class="col-md-3 mb-3"
+                 th:each="entry : ${relation.entries}">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="card-title" th:text="${entry.name}"></h6>
+                        <a th:href="@{/anime/{id}(id=${entry.malId})}" class="btn btn-sm btn-outline-primary">View</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-</div>
-</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
