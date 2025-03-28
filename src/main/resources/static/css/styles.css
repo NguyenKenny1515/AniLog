@@ -312,3 +312,19 @@ h3 {
         margin-right: 10px;
     }
 }
+
+.footer-text-primary {
+    color: #0d6efd !important;
+}
+
+footer {
+    background-color: #1a1d23;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
