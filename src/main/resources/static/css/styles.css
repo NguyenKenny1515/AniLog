@@ -46,10 +46,6 @@
     margin-bottom: 0.5rem;
 }
 
-.anime-show-text span {
-    font-weight: bold;
-}
-
 #anime-results-dropdown {
     max-height: 300px;
     overflow-y: auto;
@@ -220,7 +216,7 @@ h3 {
 
 .navbar-brand {
     font-family: 'Poppins', sans-serif;
-    font-size: 2rem;
+    font-size: 2rem !important;
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;

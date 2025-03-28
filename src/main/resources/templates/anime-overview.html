@@ -32,9 +32,11 @@
                         <div class="anime-show-body">
                             <h5 class="anime-show-title" th:text="${anime.title}"></h5>
                             <p class="anime-show-text">
-                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
-                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
-                                Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
+                                <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                <strong>Episodes: </strong><span
+                                    th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                <strong>Score: </strong><span
+                                    th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
                             </p>
                         </div>
                     </a>
@@ -55,9 +57,10 @@
                         <div class="anime-show-body">
                             <h5 class="anime-show-title" th:text="${anime.title}"></h5>
                             <p class="anime-show-text">
-                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
-                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
-                                Premiers: <span
+                                <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                <strong>Episodes: </strong><span
+                                    th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                <strong>Premiers: </strong><span
                                     th:text="${anime.season != null} ? ${#strings.capitalize(anime.season)} + ' ' + ${anime.year} : 'TBD'"></span>
                             </p>
                         </div>
@@ -79,9 +82,11 @@
                         <div class="anime-show-body">
                             <h5 class="anime-show-title" th:text="${anime.title}"></h5>
                             <p class="anime-show-text">
-                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
-                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
-                                Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
+                                <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                <strong>Episodes: </strong><span
+                                    th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                <strong>Score: </strong><span
+                                    th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
                             </p>
                         </div>
                     </a>
