@@ -115,12 +115,12 @@
     </div>
 
     <!-- Trailer Section -->
-    <div th:if="${anime.trailer.url != null}" class="mt-4 text-center">
+    <div class="mt-4 text-center">
         <h3 class="text-black">Trailer</h3>
-        <iframe th:src="${anime.trailer.embedUrl}" width="560" height="315" allowfullscreen></iframe>
+        <iframe th:if="${anime.trailer.url != null}" th:src="${anime.trailer.embedUrl}" width="560" height="315"
+                allowfullscreen></iframe>
     </div>
 
-    <!-- Anime Songs Section -->
     <div class="mt-4 text-center">
         <h3 class="text-black">Opening Songs</h3>
         <ul th:if="${anime.songs.openings != null}" class="list-unstyled">
@@ -133,7 +133,6 @@
         </ul>
     </div>
 
-    <!-- Related Entries Section -->
     <div class="mt-4 text-center">
         <h3 class="text-black">Related Entries</h3>
         <div class="row justify-content-center" th:each="relation : ${anime.relations}">
