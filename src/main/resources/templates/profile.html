@@ -1,152 +1,128 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title th:text="${user.username} + '\'s Profile - AniLog'"></title>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="js/profile-page.js" defer></script>
+    <script th:src="@{/js/profile-page.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
 </head>
 <body>
-<h1 th:text="${user.username} + '\'s Profile - AniLog'"></h1>
-<img th:src="${user.profilePic.url}" th:alt="${user.username} + '\'s profile picture'" style="border-radius: 50%;"
-     width="200" height="200">
-<br>
 
-<div class="my-5">
-    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <h3>Profile picture updated successfully!</h3>
-    </div>
-    <div class="mx-auto w-25 " style="max-width:100%;">
-        <form th:action="@{/edit-picture}" th:object="${user}" method="POST" enctype="multipart/form-data">
-            <div th:if="${uploadSuccess != null && !uploadSuccess}"
-                 class="alert alert-danger alert-dismissible fade show" role="alert">
-                <p> Image upload failed</p>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="position-relative d-inline-block">
+                <img th:src="${user.profilePic.url}" class="rounded-circle img-thumbnail" width="200" height="200">
+                <label for="image-input" class="position-absolute bottom-0 end-0 bg-white p-1 rounded-circle shadow change-picture-icon">
+                    <i class="fas fa-edit text-primary"></i>
+                </label>
+                <br>
+                <form th:action="@{/edit-picture}" th:object="${user}" method="POST" enctype="multipart/form-data" class="d-none" id="profile-pic-form">
+                    <input type="file" id="image-input" name="image" accept="image/*" class="form-control">
+                    <button id="upload-button" class="btn btn-primary mt-2" type="submit" disabled>Upload</button>
+                </form>
             </div>
-            <div class="input-group">
-                <input type="file" id="image-input" class="form-control" name="image" accept="image/*"
-                       aria-describedby="inputGroupFileAddon04"
-                       aria-label="Upload">
-                <button id="upload-button" class="btn btn-outline-secondary" type="submit" disabled>Submit</button>
+
+            <h4 th:text="${user.username}"></h4>
+            <p class="text-muted" th:text="'User Since: ' + ${#temporals.format(user.createdDatetime,'MM/dd/yyyy')}"></p>
+        </div>
+
+        <!-- Anime Stats Section -->
+        <div class="col-md-8">
+            <div class="card p-3">
+                <h3>Anime Stats</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Total Entries: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalEntries, 1, 0)}">0</span></li>
+                    <li class="list-group-item">Average Score: <span
+                            th:text="${#numbers.formatDecimal(animeStats.averageUserScore, 1, 2)}">0</span>
+                    </li>
+                    <li class="list-group-item">Episodes Watched: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalEpisodesWatched, 1, 0)}">0</span></li>
+                    <li class="list-group-item"><span class="status-dot status-watching"></span> Watching: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalWatching, 1, 0)}">0</span></li>
+                    <li class="list-group-item"><span class="status-dot status-completed"></span> Completed: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalCompleted, 1, 0)}">0</span></li>
+                    <li class="list-group-item"><span class="status-dot status-dropped"></span> Dropped: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalDropped, 1, 0)}">0</span></li>
+                    <li class="list-group-item"><span class="status-dot status-planned"></span> Plan To Watch: <span
+                            th:text="${#numbers.formatDecimal(animeStats.totalPlanned, 1, 0)}">0</span></li>
+                </ul>
             </div>
-        </form>
-    </div>
-</div>
-<br>
-
-<div sec:authorize="hasRole('ADMIN')">
-    <a class="btn btn-outline-info" th:href="@{/admin/list}" role="button">Admin Page</a>
-</div>
-
-<!-- Spring Security automatically handles logout route -->
-<form action="#" th:action="@{/logout}" method="POST">
-    <input type="submit" value="Logout"/>
-</form>
-<br>
-
-<div class="my-4">
-    <h3>Anime Stats</h3>
-    <p>Total Entries: <span th:text="${#numbers.formatDecimal(animeStats.totalEntries, 1, 0)}">0</span></p>
-    <p>Average Score: <span th:text="${#numbers.formatDecimal(animeStats.averageUserScore, 1, 2)}">0</span></p>
-    <p>Episodes Watched: <span th:text="${#numbers.formatDecimal(animeStats.totalEpisodesWatched, 1, 0)}">0</span></p>
-    <p><span class="status-dot status-watching"></span> Watching: <span
-            th:text="${#numbers.formatDecimal(animeStats.totalWatching, 1, 0)}">0</span>
-    </p>
-    <p><span class="status-dot status-completed"></span> Completed: <span
-            th:text="${#numbers.formatDecimal(animeStats.totalCompleted, 1, 0)}">0</span></p>
-    <p><span class="status-dot status-dropped"></span> Dropped: <span
-            th:text="${#numbers.formatDecimal(animeStats.totalDropped, 1, 0)}">0</span></p>
-    <p><span class="status-dot status-planned"></span> Planned: <span
-            th:text="${#numbers.formatDecimal(animeStats.totalPlanned, 1, 0)}">0</span></p>
-</div>
-
-<div class="my-4">
-    <h3>Your Anime List</h3>
-
-    <div th:if="${animeEntries.empty}">
-        <p class="text-muted">No anime tracked yet, get started!</p>
+        </div>
     </div>
 
-    <table id="anime-list-grid" class="table table-striped" th:if="${!animeEntries.empty}">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th onclick="sortGrid(1)" class="sortable">Anime</th>
-            <th onclick="sortGrid(2)" class="sortable">Status</th>
-            <th onclick="sortGrid(3)" class="sortable">Progress</th>
-            <th onclick="sortGrid(4)" class="sortable">Score</th>
-            <th>Action</th>
-            <th></th>
-            <th onclick="sortGrid(6)" class="sortable">Type</th>
-            <th onclick="sortGrid(7)" class="sortable">Episodes</th>
-            <th onclick="sortGrid(8)" class="sortable">Studios</th>
-            <th onclick="sortGrid(9)" class="sortable">Genres</th>
-            <th onclick="sortGrid(10)" class="sortable">Aired</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="entry, iterStat : ${animeEntries}">
-            <td th:text="${iterStat.index + 1}"></td>
-
-            <td>
-                <div class="d-flex align-items-center">
-                    <div class="status-bar me-2"
-                         th:classappend="'status-' + ${#strings.toLowerCase(entry.entryStatus)}"></div>
-                    <img th:src="${entry.imageUrl}" th:alt="'Picture of ' + ${entry.title}" width="50" height="75">
-                    <a th:href="@{/anime/{id}(id=${entry.malId})}">
-                        <span class="ms-2" th:text="${entry.title}"></span>
-                    </a>
-                </div>
-            </td>
-
-            <form th:action="@{/entries/{id}(id=${entry.id})}" th:method="PATCH">
-                <input type="hidden" name="source" value="profile">
-
+    <div class="mt-5">
+        <h3>Your Anime List</h3>
+        <div th:if="${animeEntries.empty}" class="alert alert-secondary">No anime tracked yet, get started!</div>
+        <table class="table table-striped" th:if="${!animeEntries.empty}" style="border-radius: 15px; border: 2px solid #dcdcdc; overflow: hidden;">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th onclick="sortGrid(1)" class="sortable">Anime</th>
+                <th onclick="sortGrid(2)" class="sortable status-column">Status</th>
+                <th onclick="sortGrid(3)" class="sortable progress-column">Progress</th>
+                <th onclick="sortGrid(4)" class="sortable score-column">Score</th>
+                <th>Action</th>
+                <th></th>
+                <th onclick="sortGrid(6)" class="sortable">Type</th>
+                <th onclick="sortGrid(7)" class="sortable">Episodes</th>
+                <th onclick="sortGrid(8)" class="sortable">Studios</th>
+                <th onclick="sortGrid(9)" class="sortable">Genres</th>
+                <th onclick="sortGrid(10)" class="sortable">Aired</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry, iterStat : ${animeEntries}">
+                <td th:text="${iterStat.index + 1}"></td>
                 <td>
-                    <select class="form-select entry-status" name="entryStatus">
-                        <option th:each="status : ${entryStatuses}"
-                                th:value="${status.name()}"
-                                th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"
-                                th:selected="${status == entry.entryStatus}">
-                        </option>
-                    </select>
+                    <div class="d-flex align-items-center">
+                        <div class="status-bar me-2"
+                             th:classappend="'status-' + ${#strings.toLowerCase(entry.entryStatus)}"></div>
+                        <img th:src="${entry.imageUrl}" class="rounded me-2" width="50" height="75">
+                        <a th:href="@{/anime/{id}(id=${entry.malId})}" th:text="${entry.title}" class="text-decoration-none"></a>
+                    </div>
                 </td>
-
-                <td>
-                    <input type="number" class="form-control user-score"
-                           name="userScore" min="0" max="10" step="1"
-                           th:value="${entry.userScore}">
-                </td>
-
-                <td>
-                    <input type="number" class="form-control episodes-watched"
-                           name="episodesWatched" min="0"
-                           th:max="${entry.episodes}"
-                           th:value="${entry.episodesWatched}">
-                </td>
-
-                <td>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </td>
-            </form>
-
-            <form class="delete-form" th:action="@{/entries/{id}(id=${entry.id})}" th:method="DELETE">
-                <td>
+                <form th:action="@{/entries/{id}(id=${entry.id})}" th:method="PATCH">
                     <input type="hidden" name="source" value="profile">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <td>
+                        <select class="form-select entry-status" name="entryStatus">
+                            <option th:each="status : ${entryStatuses}" th:value="${status.name()}"
+                                    th:text="${status.name() == 'PLANNED' ? 'Plan To Watch' : #strings.capitalize(status.name().toLowerCase())}"
+                                    th:selected="${status == entry.entryStatus}"></option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="form-control episodes-watched" name="episodesWatched" th:max="${entry.episodes}"
+                               th:value="${entry.episodesWatched}"></td>
+                    <td><input type="number" class="form-control user-score" name="userScore" min="0" max="10"
+                               th:value="${entry.userScore}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </td>
+                </form>
+                <td>
+                    <form class="delete-form" th:action="@{/entries/{id}(id=${entry.id})}" th:method="DELETE">
+                            <input type="hidden" name="source" value="profile">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
-            </form>
-
-            <td th:text="${entry.type}"></td>
-            <td th:text="${entry.episodes}"></td>
-            <td th:text="${entry.studios}"></td>
-            <td th:text="${entry.genres}"></td>
-            <td th:text="${entry.aired}"></td>
-        </tr>
-        </tbody>
-    </table>
+                <td th:text="${entry.type}"></td>
+                <td th:text="${entry.episodes}"></td>
+                <td th:text="${entry.studios}"></td>
+                <td th:text="${entry.genres}"></td>
+                <td th:text="${entry.aired}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

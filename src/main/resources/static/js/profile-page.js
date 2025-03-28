@@ -1,8 +1,14 @@
 const imageInput = document.getElementById("image-input");
 const uploadButton = document.getElementById("upload-button");
+const profilePicForm = document.getElementById("profile-pic-form");
+const changePictureIcon = document.querySelector(".change-picture-icon");
 
 imageInput.addEventListener("change", () => {
     uploadButton.disabled = imageInput.files.length <= 0;
+});
+
+changePictureIcon.addEventListener("click", () => {
+    profilePicForm.classList.remove("d-none");
 });
 
 let sortOrder = {};
@@ -38,6 +44,10 @@ function sortGrid(columnIndex) {
 document.addEventListener("DOMContentLoaded", function() {
     // Initially sort by title
      sortGrid(1);
+     const changePictureIcon = document.querySelector(".change-picture-icon");
+     if (changePictureIcon) {
+         changePictureIcon.style.cursor = "pointer";
+     }
 });
 
 function enforceLimits(className, min, max) {
@@ -66,17 +76,4 @@ document.querySelectorAll('.delete-form').forEach(form => {
             event.preventDefault();
         }
     });
-});
-
-// Save the scroll position before the page unloads
-window.addEventListener("beforeunload", function() {
-    sessionStorage.setItem("scrollPosition", window.scrollY);
-});
-
-// Restore the scroll position after the page is fully loaded
-window.addEventListener("load", function() {
-    const savedScrollPosition = sessionStorage.getItem("scrollPosition");
-    if (savedScrollPosition !== null) {
-        window.scrollTo(0, savedScrollPosition);
-    }
 });

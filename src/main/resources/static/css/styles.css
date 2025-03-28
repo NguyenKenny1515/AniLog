@@ -144,11 +144,17 @@
 }
 
 /* Global Styles */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f9fa;
     color: #495057;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -166,7 +172,6 @@ h3 {
 .btn-primary {
     background-color: #0d6efd;
     border-color: #0d6efd;
-    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
@@ -200,7 +205,6 @@ h3 {
 .anilog-card {
     max-width: 750px;
     width: 100%;
-    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .anilog-navbar {
@@ -255,6 +259,7 @@ h3 {
 
 footer {
     background-color: #1a1d23;
+    margin-top: auto;
 }
 
 footer a {
@@ -263,4 +268,21 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.container {
+    flex: 1;
+}
+
+.status-column {
+    width: 150px;
+}
+
+.progress-column, .score-column {
+    width: 80px;
+}
+
+.status-column select,
+.score-column input {
+    white-space: normal;
 }

@@ -65,7 +65,8 @@ public class AnimeEntryServiceImpl implements AnimeEntryService {
         for (AnimeEntry animeEntry : animeEntries.values()) {
             animeStats.put("averageUserScore", animeStats.get("averageUserScore") + animeEntry.getUserScore());
             animeStats.put("totalEntries", animeStats.get("totalEntries") + 1);
-            animeStats.put("totalEpisodesWatched", animeStats.get("totalEpisodesWatched") + 1);
+            animeStats.put("totalEpisodesWatched", animeStats.get("totalEpisodesWatched")
+                    + animeEntry.getEpisodesWatched());
 
             switch(animeEntry.getEntryStatus()) {
                 case WATCHING -> animeStats.put("totalWatching", animeStats.get("totalWatching") + 1);
