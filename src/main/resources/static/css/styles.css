@@ -209,10 +209,10 @@ h3 {
 
 .anilog-navbar {
     background-color: #343a40 !important;
-    padding: 15px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 15px 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
 }
 
 .navbar-brand {
