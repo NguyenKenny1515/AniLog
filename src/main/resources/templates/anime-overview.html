@@ -3,76 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <title>Anime - AniLog</title>
+
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
     <script th:src="@{/js/anime-search.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
 </head>
-<body class="d-flex flex-column align-items-center">
-<h1>Anime</h1>
+<body>
 
-<div class="row justify-content-center w-100 mb-4">
-    <div class="col-md-6 col-lg-4">
-        <div class="input-group mb-3">
-            <input type="text" id="anime-search-bar" class="form-control form-control-lg" placeholder="Search Anime..."
-                   aria-label="Search Anime" aria-describedby="search-addon" onkeyup="searchAnime()">
-            <div id="anime-results-dropdown" class="dropdown-menu" aria-labelledby="search-addon"></div>
-        </div>
-    </div>
-</div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2>Top Airing Anime</h2>
-<div class="anime-section" th:if="${groupedCurrent}">
-    <div class="anime-row" th:each="current : ${groupedCurrent}">
-        <div class="anime-card" th:each="anime : ${current}">
-            <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-card-link">
-                <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
-                <div class="anime-info">
-                    <h3 th:text="${anime.title}"></h3>
-                    <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
-                    <p>Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span></p>
-                    <p>Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span></p>
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Explore Anime</h1>
+
+    <div th:replace="~{fragments/search-bar :: search-bar}"></div>
+
+    <h3 class="text-center mb-4">Top Airing Anime</h3>
+    <div th:each="batch : ${groupedCurrent}">
+        <div class="row g-4 mb-4 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
+                <div class="anime-show">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
+                        <img th:src="${anime.images.webp.largeImageUrl}" class="anime-show-img" th:alt="${anime.title}">
+                        <div class="anime-show-body">
+                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
+                            <p class="anime-show-text">
+                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
+                            </p>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <h3 class="text-center mb-4">Top Upcoming Anime</h3>
+    <div th:each="batch : ${groupedUpcoming}">
+        <div class="row g-4 mb-4 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
+                <div class="anime-show">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
+                        <img th:src="${anime.images.webp.imageUrl}" class="anime-show-img" th:alt="${anime.title}">
+                        <div class="anime-show-body">
+                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
+                            <p class="anime-show-text">
+                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                Premiers: <span
+                                    th:text="${anime.season != null} ? ${#strings.capitalize(anime.season)} + ' ' + ${anime.year} : 'TBD'"></span>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <h3 class="text-center mb-4">🐐 Top Anime of All Time 🐐</h3>
+    <div th:each="batch : ${groupedTop}">
+        <div class="row g-4 mb-4 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
+                <div class="anime-show">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
+                        <img th:src="${anime.images.webp.imageUrl}" class="anime-show-img" th:alt="${anime.title}">
+                        <div class="anime-show-body">
+                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
+                            <p class="anime-show-text">
+                                Type: <span th:text="${anime.type} ?: 'N/A'"></span><br>
+                                Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
+                                Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<h2>Top Upcoming Anime</h2>
-<div class="anime-section" th:if="${groupedUpcoming}">
-    <div class="anime-row" th:each="upcoming : ${groupedUpcoming}">
-        <div class="anime-card" th:each="anime : ${upcoming}">
-            <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-card-link">
-                <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
-                <div class="anime-info">
-                    <h3 th:text="${anime.title}"></h3>
-                    <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
-                    <p>Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span></p>
-                    <p>Premiers: <span
-                            th:text="${anime.season != null} ? ${#strings.capitalize(anime.season)} + ' ' + ${anime.year} : 'TBD'"></span>
-                    </p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<h2>🐐 Top Anime 🐐</h2>
-<div class="anime-section" th:if="${groupedTop}">
-    <div class="anime-row" th:each="top : ${groupedTop}">
-        <div class="anime-card" th:each="anime : ${top}">
-            <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-card-link">
-                <img th:src="${anime.images.webp.imageUrl}" th:alt="${anime.title}">
-                <div class="anime-info">
-                    <h3 th:text="${anime.title}"></h3>
-                    <p>Type: <span th:text="${anime.type} ?: 'N/A'"></span></p>
-                    <p>Episodes: <span th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span></p>
-                    <p>Score: <span th:text="${anime.score != 0} ? ${anime.score} : 'N/A'"></span></p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
