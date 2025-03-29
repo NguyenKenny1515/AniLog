@@ -21,3 +21,5 @@ track of ongoing series, and explore the best the anime world has to offer.
 - Bootstrap 5
 
 - Jikan API
+
+- Heroku
