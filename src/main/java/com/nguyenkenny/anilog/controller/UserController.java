@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -58,18 +57,5 @@ public class UserController {
         }
 
         return "redirect:profile";
-    }
-
-    @GetMapping("/admin/list")
-    public String listUsers(Model model) {
-        List<AppUser> users = appUserService.findAll();
-        model.addAttribute("users", users);
-        return "admin";
-    }
-
-    @GetMapping("/admin/delete")
-    public String deleteUser(@RequestParam("username") String username) {
-        appUserService.deleteById(username);
-        return "redirect:/admin/list";
     }
 }
