@@ -1,11 +1,14 @@
 package com.nguyenkenny.anilog.jikan;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class AnimeResponse {
 
     public Anime data;
+
+    public Anime getData() {
+        return data;
+    }
+
+    public void setData(Anime data) {
+        this.data = data;
+    }
 }
