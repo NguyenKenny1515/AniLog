@@ -28,12 +28,13 @@ public class AnimeEntryServiceImpl implements AnimeEntryService {
     @Override
     public AnimeEntry findById(int id) {
         Optional<AnimeEntry> result = animeEntryRepository.findById(id);
+
         return result.orElse(null);
     }
 
     @Override
-    public AnimeEntry save(AnimeEntry animeEntry) {
-        return animeEntryRepository.save(animeEntry);
+    public void save(AnimeEntry animeEntry) {
+        animeEntryRepository.save(animeEntry);
     }
 
     @Override
@@ -47,6 +48,7 @@ public class AnimeEntryServiceImpl implements AnimeEntryService {
         this.setValues(animeEntry, anime);
         animeEntryRepository.save(animeEntry);
         appUser.addAnimeEntry(animeEntry);
+
         return animeEntry;
     }
 
@@ -65,10 +67,12 @@ public class AnimeEntryServiceImpl implements AnimeEntryService {
         for (AnimeEntry animeEntry : animeEntries.values()) {
             animeStats.put("averageUserScore", animeStats.get("averageUserScore") + animeEntry.getUserScore());
             animeStats.put("totalEntries", animeStats.get("totalEntries") + 1);
-            animeStats.put("totalEpisodesWatched", animeStats.get("totalEpisodesWatched")
-                    + animeEntry.getEpisodesWatched());
+            animeStats.put(
+                    "totalEpisodesWatched",
+                    animeStats.get("totalEpisodesWatched") + animeEntry.getEpisodesWatched()
+            );
 
-            switch(animeEntry.getEntryStatus()) {
+            switch (animeEntry.getEntryStatus()) {
                 case WATCHING -> animeStats.put("totalWatching", animeStats.get("totalWatching") + 1);
                 case COMPLETED -> animeStats.put("totalCompleted", animeStats.get("totalCompleted") + 1);
                 case DROPPED -> animeStats.put("totalDropped", animeStats.get("totalDropped") + 1);

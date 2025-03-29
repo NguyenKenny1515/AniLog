@@ -9,7 +9,7 @@ public interface AnimeEntryService {
 
     AnimeEntry findById(int id);
 
-    AnimeEntry save(AnimeEntry animeEntry);
+    void save(AnimeEntry animeEntry);
 
     void delete(AnimeEntry animeEntry);
 

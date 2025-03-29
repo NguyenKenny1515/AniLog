@@ -28,19 +28,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image save(Image newImage) {
-        return imageRepository.save(newImage);
-    }
-
-    @Override
-    public Image findById(UUID id) {
-        Optional<Image> result = imageRepository.findById(id);
-        return result.orElse(null);
+    public void save(Image newImage) {
+        imageRepository.save(newImage);
     }
 
     @Override
     public void delete(Image image) {
         String url = image.getUrl();
+
         if (!url.equals(defaultPicUrl)) {
             Matcher matcher = Pattern.compile("(?<=v1/)(.*?)(?=\\?_a=)").matcher(url);
             if (matcher.find()) {
@@ -48,6 +43,7 @@ public class ImageServiceImpl implements ImageService {
                 cloudinaryService.deleteImage(publicId);
             }
         }
+
         imageRepository.deleteById(image.getId());
     }
 

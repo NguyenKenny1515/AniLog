@@ -19,17 +19,19 @@ import java.util.Optional;
 @Service
 public class AppUserServiceImpl implements AppUserService {
 
-    private AppUserRepository appUserRepository;
-    private AuthenticationFacade authenticationFacade;
-    private ImageService imageService;
-    private PasswordEncoder passwordEncoder;
+    private final AppUserRepository appUserRepository;
+    private final AuthenticationFacade authenticationFacade;
+    private final ImageService imageService;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${anilog.default_profile_pic}")
     private String defaultPicUrl;
 
     @Autowired
-    public AppUserServiceImpl(AppUserRepository appUserRepository, AuthenticationFacade authenticationFacade,
-                              ImageService imageService, PasswordEncoder passwordEncoder) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository,
+                              AuthenticationFacade authenticationFacade,
+                              ImageService imageService,
+                              PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.authenticationFacade = authenticationFacade;
         this.imageService = imageService;
@@ -60,8 +62,8 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser save(AppUser newUser) {
-        return appUserRepository.save(newUser);
+    public void save(AppUser newUser) {
+        appUserRepository.save(newUser);
     }
 
     @Override
@@ -73,9 +75,12 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser createNewUser(UserRegistrationDto userRegistrationDto) {
+    public void createNewUser(UserRegistrationDto userRegistrationDto) {
         AppUser newUser = new AppUser(userRegistrationDto.getUsername(),
-                passwordEncoder.encode(userRegistrationDto.getPassword()), true, ZonedDateTime.now());
+                passwordEncoder.encode(userRegistrationDto.getPassword()),
+                true,
+                ZonedDateTime.now()
+        );
 
         Image defaultPicture = new Image("default_" + newUser.getUsername(), defaultPicUrl);
         imageService.save(defaultPicture);
@@ -85,7 +90,6 @@ public class AppUserServiceImpl implements AppUserService {
         newUser.addRole(newAuthority);
 
         this.save(newUser);
-        return newUser;
     }
 
     @Override

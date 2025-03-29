@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
 </head>
 <body>
-
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mt-5">
@@ -22,18 +21,21 @@
         <div class="col-md-4 text-center">
             <div class="position-relative d-inline-block">
                 <img th:src="${user.profilePic.url}" class="rounded-circle img-thumbnail" width="200" height="200">
-                <label for="image-input" class="position-absolute bottom-0 end-0 bg-white p-1 rounded-circle shadow change-picture-icon">
+                <label for="image-input"
+                       class="position-absolute bottom-0 end-0 bg-white p-1 rounded-circle shadow change-picture-icon">
                     <i class="fas fa-edit text-primary"></i>
                 </label>
                 <br>
-                <form th:action="@{/edit-picture}" th:object="${user}" method="POST" enctype="multipart/form-data" class="d-none" id="profile-pic-form">
+                <form th:action="@{/edit-picture}" th:object="${user}" method="POST" enctype="multipart/form-data"
+                      class="d-none" id="profile-pic-form">
                     <input type="file" id="image-input" name="image" accept="image/*" class="form-control">
                     <button id="upload-button" class="btn btn-primary mt-2" type="submit" disabled>Upload</button>
                 </form>
             </div>
 
             <h4 th:text="${user.username}"></h4>
-            <p class="text-muted" th:text="'User Since: ' + ${#temporals.format(user.createdDatetime,'MM/dd/yyyy')}"></p>
+            <p class="text-muted"
+               th:text="'User Since: ' + ${#temporals.format(user.createdDatetime,'MM/dd/yyyy')}"></p>
         </div>
 
         <div class="col-md-8">
@@ -63,7 +65,8 @@
     <div class="mt-5">
         <h3>Your Anime List</h3>
         <div th:if="${animeEntries.empty}" class="alert alert-secondary">No anime tracked yet, get started!</div>
-        <table class="table table-striped" th:if="${!animeEntries.empty}" style="border: 2px solid #dcdcdc; overflow: hidden;">
+        <table class="table table-striped" th:if="${!animeEntries.empty}"
+               style="border: 2px solid #dcdcdc; overflow: hidden;">
             <thead>
             <tr>
                 <th>#</th>
@@ -87,8 +90,10 @@
                     <div class="d-flex align-items-center">
                         <div class="status-bar me-2"
                              th:classappend="'status-' + ${#strings.toLowerCase(entry.entryStatus)}"></div>
-                        <img th:src="${entry.imageUrl}" class="rounded me-2" width="50" height="75">
-                        <a th:href="@{/anime/{id}(id=${entry.malId})}" th:text="${entry.title}" class="text-decoration-none"></a>
+                        <img th:src="${entry.imageUrl}" th:alt="'Entry for ' + ${entry.title}" class="rounded me-2"
+                             width="50" height="75">
+                        <a th:href="@{/anime/{id}(id=${entry.malId})}" th:text="${entry.title}"
+                           class="text-decoration-none"></a>
                     </div>
                 </td>
                 <form th:action="@{/entries/{id}(id=${entry.id})}" th:method="PATCH">
@@ -100,7 +105,8 @@
                                     th:selected="${status == entry.entryStatus}"></option>
                         </select>
                     </td>
-                    <td><input type="number" class="form-control episodes-watched" name="episodesWatched" th:max="${entry.episodes}"
+                    <td><input type="number" class="form-control episodes-watched" name="episodesWatched"
+                               th:max="${entry.episodes}"
                                th:value="${entry.episodesWatched}"></td>
                     <td><input type="number" class="form-control user-score" name="userScore" min="0" max="10"
                                th:value="${entry.userScore}"></td>
@@ -110,8 +116,8 @@
                 </form>
                 <td>
                     <form class="delete-form" th:action="@{/entries/{id}(id=${entry.id})}" th:method="DELETE">
-                            <input type="hidden" name="source" value="profile">
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                        <input type="hidden" name="source" value="profile">
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
                 <td th:text="${entry.type}"></td>
@@ -124,7 +130,6 @@
         </table>
     </div>
 </div>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

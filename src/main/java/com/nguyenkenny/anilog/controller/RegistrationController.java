@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class RegistrationController {
 
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
     @Autowired
     public RegistrationController(AppUserService appUserService) {
@@ -37,7 +37,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto,
-                               BindingResult bindingResult, Model model, RedirectAttributes redirAttr) {
+                               BindingResult bindingResult,
+                               Model model,
+                               RedirectAttributes redirAttr) {
         AppUser appUser = appUserService.findByUsername(userRegistrationDto.getUsername());
         if (appUser != null) {
             bindingResult.addError(new FieldError("user", "username", "This username has already been taken"));
@@ -50,7 +52,6 @@ public class RegistrationController {
         // If no validation errors, create the account!
         try {
             appUserService.createNewUser(userRegistrationDto);
-
             model.addAttribute("user", new UserRegistrationDto());
             redirAttr.addFlashAttribute("success", true);
         } catch (Exception e) {

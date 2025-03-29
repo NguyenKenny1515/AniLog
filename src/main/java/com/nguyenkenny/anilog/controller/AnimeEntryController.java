@@ -31,12 +31,12 @@ public class AnimeEntryController {
     @PostMapping("")
     public String addAnimeEntry(@ModelAttribute AnimeEntry animeEntry) {
         AnimeEntry createdEntry = animeEntryService.createEntry(animeEntry, animeEntry.getAppUser());
-
         return "redirect:/anime/" + createdEntry.getMalId();
     }
 
     @PatchMapping("/{id}")
-    public String updateAnimeEntry(@PathVariable int id, @ModelAttribute AnimeEntry animeEntry,
+    public String updateAnimeEntry(@PathVariable int id,
+                                   @ModelAttribute AnimeEntry animeEntry,
                                    @RequestParam(value = "source") String source) {
         AnimeEntry existingEntry = animeEntryService.findById(id);
 
@@ -53,6 +53,7 @@ public class AnimeEntryController {
         if (source.equals("profile")) {
             return "redirect:/profile";
         }
+
         return "redirect:/anime/" + existingEntry.getMalId();
     }
 
@@ -71,6 +72,7 @@ public class AnimeEntryController {
         if (source.equals("profile")) {
             return "redirect:/profile";
         }
+
         return "redirect:/anime/" + malId;
     }
 }

@@ -18,8 +18,8 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    private AppUserService appUserService;
-    private AnimeEntryService animeEntryService;
+    private final AppUserService appUserService;
+    private final AnimeEntryService animeEntryService;
 
     @Autowired
     public UserController(AppUserService appUserService, AnimeEntryService animeEntryService) {
@@ -31,6 +31,7 @@ public class UserController {
     public String getProfilePage(Model model) {
         AppUser user = appUserService.getAuthenticatedUserWithEntries();
         Map<String, Double> animeStats = animeEntryService.calculateAnimeStats(user.getAnimeEntries());
+
         model.addAttribute("user", user);
         model.addAttribute("animeEntries", user.getAnimeEntries().values());
         model.addAttribute("animeStats", animeStats);

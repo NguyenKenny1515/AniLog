@@ -44,6 +44,7 @@ function sortGrid(columnIndex) {
 document.addEventListener("DOMContentLoaded", function() {
     // Initially sort by title
      sortGrid(1);
+
      const changePictureIcon = document.querySelector(".change-picture-icon");
      if (changePictureIcon) {
          changePictureIcon.style.cursor = "pointer";

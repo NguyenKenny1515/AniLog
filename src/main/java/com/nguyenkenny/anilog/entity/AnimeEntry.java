@@ -3,7 +3,6 @@ package com.nguyenkenny.anilog.entity;
 import com.nguyenkenny.anilog.enums.EntryStatus;
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "anime_entry")
 public class AnimeEntry {

@@ -1,22 +1,11 @@
 package com.nguyenkenny.anilog.controller;
 
-import com.nguyenkenny.anilog.entity.AppUser;
-import com.nguyenkenny.anilog.service.AppUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Controller
 public class AuthenticationController {
-
-    private AppUserService appUserService;
-
-    @Autowired
-    public AuthenticationController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
 
     @GetMapping("/login")
     public String showLoginPage() {

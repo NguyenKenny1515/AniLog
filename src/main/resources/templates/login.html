@@ -18,7 +18,6 @@
             <h1 class="main-text mb-4">Login</h1>
 
             <form th:action="@{/authenticateTheUser}" method="POST">
-
                 <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show text-center">
                     Invalid username and password.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

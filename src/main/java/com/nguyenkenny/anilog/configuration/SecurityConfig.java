@@ -23,14 +23,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
-                        configurer
-                                .requestMatchers("/", "/registration", "/css/**", "/js/**").permitAll()
+                        configurer.requestMatchers("/", "/registration", "/css/**", "/js/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
-                        form
-                                .loginPage("/login")
+                        form.loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
                                 .defaultSuccessUrl("/profile", true)
                                 .permitAll()

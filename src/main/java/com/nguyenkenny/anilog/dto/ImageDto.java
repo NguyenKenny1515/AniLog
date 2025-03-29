@@ -4,8 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageDto {
 
-    private String name;
-    private MultipartFile file;
+    private final String name;
+    private final MultipartFile file;
 
     public ImageDto(String name, MultipartFile file) {
         this.name = name;

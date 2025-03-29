@@ -37,10 +37,10 @@ function submitUpdateForm() {
         if (response.ok) {
             location.reload();
         } else {
-            console.log('Error updating entry');
+            console.log("Error updating entry");
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error("Error: ", error);
     });
 }

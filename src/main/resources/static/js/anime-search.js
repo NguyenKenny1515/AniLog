@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const searchBar = document.getElementById("anime-search-bar");
-    const dropdown = document.getElementById("anime-results-dropdown");
+    const searchBar = document.getElementById("search-bar");
+    const dropdown = document.getElementById("results-dropdown");
     let debounceTimer;
 
     searchBar.addEventListener("keyup", function (event) {
@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function searchAnime() {
-    const query = document.getElementById('anime-search-bar').value.trim();
-    const dropdown = document.getElementById('anime-results-dropdown');
+    const query = document.getElementById("search-bar").value.trim();
+    const dropdown = document.getElementById("results-dropdown");
 
-    dropdown.innerHTML = '';
+    dropdown.innerHTML = "";
 
     if (query.length < 2) {
         dropdown.style.display = "none";
@@ -48,37 +48,37 @@ function searchAnime() {
             }
 
             results.forEach(anime => {
-                const resultItem = document.createElement('a');
-                resultItem.href = `/anime/${anime.mal_id}`;
-                resultItem.classList.add('list-group-item', 'list-group-item-action', 'd-flex', 'align-items-center');
-                resultItem.style.position = "relative";
+                const item = document.createElement("a");
+                item.href = `/anime/${anime.mal_id}`;
+                item.classList.add("list-group-item", "list-group-item-action", "d-flex", "align-items-center");
+                item.style.position = "relative";
 
-                const image = document.createElement('img');
+                const image = document.createElement("img");
                 image.src = anime.images.webp.large_image_url;
                 image.alt = anime.title;
-                image.classList.add('img-fluid', 'me-3');
-                image.style.width = '50px';
+                image.classList.add("img-fluid", "me-3");
+                image.style.width = "50px";
 
-                resultItem.addEventListener("mouseenter", () => {
+                item.addEventListener("mouseenter", () => {
                     image.style.transform = "scale(1.5)";
                 });
 
-                resultItem.addEventListener("mouseleave", () => {
+                item.addEventListener("mouseleave", () => {
                     image.style.transform = "scale(1)";
                 });
 
-                const textContainer = document.createElement('div');
-                textContainer.classList.add('flex-grow-1');
+                const textContainer = document.createElement("div");
+                textContainer.classList.add("flex-grow-1");
 
-                const title = document.createElement('strong');
+                const title = document.createElement("strong");
                 title.textContent = anime.title;
 
-                const typeAndYear = document.createElement('div');
-                typeAndYear.classList.add('text-muted', 'small', 'mt-1');
+                const typeAndYear = document.createElement("div");
+                typeAndYear.classList.add("text-muted", "small", "mt-1");
                 typeAndYear.textContent = `(${anime.type}, ${anime.year || anime.aired.string.match(/\d{4}/)[0]})`;
 
-                const extraInfo = document.createElement('div');
-                extraInfo.classList.add('text-muted', 'small', 'mt-1', 'anime-extra-info');
+                const extraInfo = document.createElement("div");
+                extraInfo.classList.add("text-muted", "small", "mt-1", "anime-extra-info");
                 extraInfo.style.display = "none";
                 extraInfo.innerHTML = `
                     <p class="mb-0">Aired: ${anime.aired.string}</p>
@@ -86,30 +86,29 @@ function searchAnime() {
                     <p class="mb-0">Status: ${anime.status}</p>
                 `;
 
-                resultItem.addEventListener("mouseenter", () => {
-                    extraInfo.style.display = "block";
-                });
-
-                resultItem.addEventListener("mouseleave", () => {
-                    extraInfo.style.display = "none";
-                });
-
                 textContainer.appendChild(title);
                 textContainer.appendChild(typeAndYear);
                 textContainer.appendChild(extraInfo);
 
-                resultItem.appendChild(image);
-                resultItem.appendChild(textContainer);
-                dropdown.appendChild(resultItem);
+                item.appendChild(image);
+                item.appendChild(textContainer);
+                item.addEventListener("mouseenter", () => {
+                    extraInfo.style.display = "block";
+                });
+                item.addEventListener("mouseleave", () => {
+                    extraInfo.style.display = "none";
+                });
+
+                dropdown.appendChild(item);
             });
 
-            const viewAllItem = document.createElement('a');
+            const viewAllItem = document.createElement("a");
             viewAllItem.href = `/anime/search?q=${query}`;
-            viewAllItem.classList.add('list-group-item', 'list-group-item-action', 'text-center', 'fw-bold');
+            viewAllItem.classList.add("list-group-item", "list-group-item-action", "text-center", "fw-bold");
             viewAllItem.textContent = "View All Results";
 
             dropdown.appendChild(viewAllItem);
             dropdown.style.display = "block";
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => console.error("Error: ", error));
 }

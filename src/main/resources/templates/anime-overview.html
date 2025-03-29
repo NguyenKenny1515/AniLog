@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
 </head>
 <body>
-
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mt-4">
@@ -26,12 +25,12 @@
     <div th:each="batch : ${groupedCurrent}">
         <div class="row g-4 mb-4 justify-content-center">
             <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
-                <div class="anime-show">
-                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
-                        <img th:src="${anime.images.webp.largeImageUrl}" class="anime-show-img" th:alt="${anime.title}">
-                        <div class="anime-show-body">
-                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
-                            <p class="anime-show-text">
+                <div class="anime">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-link">
+                        <img th:src="${anime.images.webp.largeImageUrl}" class="anime-img" th:alt="${anime.title}">
+                        <div class="anime-body">
+                            <h5 class="anime-title" th:text="${anime.title}"></h5>
+                            <p class="anime-text">
                                 <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
                                 <strong>Episodes: </strong><span
                                     th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
@@ -51,12 +50,12 @@
     <div th:each="batch : ${groupedUpcoming}">
         <div class="row g-4 mb-4 justify-content-center">
             <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
-                <div class="anime-show">
-                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
-                        <img th:src="${anime.images.webp.imageUrl}" class="anime-show-img" th:alt="${anime.title}">
-                        <div class="anime-show-body">
-                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
-                            <p class="anime-show-text">
+                <div class="anime">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-link">
+                        <img th:src="${anime.images.webp.imageUrl}" class="anime-img" th:alt="${anime.title}">
+                        <div class="anime-body">
+                            <h5 class="anime-title" th:text="${anime.title}"></h5>
+                            <p class="anime-text">
                                 <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
                                 <strong>Episodes: </strong><span
                                     th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
@@ -76,12 +75,12 @@
     <div th:each="batch : ${groupedTop}">
         <div class="row g-4 mb-4 justify-content-center">
             <div class="col-6 col-md-4 col-lg-2" th:each="anime : ${batch}">
-                <div class="anime-show">
-                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-show-link">
-                        <img th:src="${anime.images.webp.imageUrl}" class="anime-show-img" th:alt="${anime.title}">
-                        <div class="anime-show-body">
-                            <h5 class="anime-show-title" th:text="${anime.title}"></h5>
-                            <p class="anime-show-text">
+                <div class="anime">
+                    <a th:href="@{/anime/{id}(id=${anime.malId})}" class="anime-link">
+                        <img th:src="${anime.images.webp.imageUrl}" class="anime-img" th:alt="${anime.title}">
+                        <div class="anime-body">
+                            <h5 class="anime-title" th:text="${anime.title}"></h5>
+                            <p class="anime-text">
                                 <strong>Type: </strong><span th:text="${anime.type} ?: 'N/A'"></span><br>
                                 <strong>Episodes: </strong><span
                                     th:text="${anime.episodes != 0} ? ${anime.episodes} : 'TBD'"></span><br>
@@ -97,6 +96,5 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
 </html>

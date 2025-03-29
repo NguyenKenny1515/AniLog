@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class JikanService {
@@ -58,9 +61,9 @@ public class JikanService {
 
     public List<Anime> getTopUpcomingAnime() {
         List<Anime> animeList = fetchBasicListOfAnime("/seasons/upcoming");
-        animeList = new ArrayList<>(new HashSet<>(animeList));
-        animeList.sort(Comparator.comparingDouble(Anime::getPopularity));
+        List<Anime> uniqueAnimeList = new ArrayList<>(new HashSet<>(animeList));
+        uniqueAnimeList.sort(Comparator.comparingDouble(Anime::getPopularity));
 
-        return animeList;
+        return uniqueAnimeList;
     }
 }

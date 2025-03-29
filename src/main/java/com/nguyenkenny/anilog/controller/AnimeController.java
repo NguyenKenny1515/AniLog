@@ -56,7 +56,7 @@ public class AnimeController {
     public String showDetailsPage(@PathVariable int id, Model model) {
         Anime anime = jikanService.getAnimeById(id);
         AppUser appUser = appUserService.getAuthenticatedUserWithEntries();
-        AnimeEntry animeEntry = appUser.getAnimeEntries().getOrDefault(id, null);;
+        AnimeEntry animeEntry = appUser.getAnimeEntries().getOrDefault(id, null);
 
         if (anime == null) {
             throw new RuntimeException("Anime not found - " + id);

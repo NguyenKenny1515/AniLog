@@ -16,11 +16,11 @@ public interface AppUserService {
 
     AppUser getAuthenticatedUserWithEntries();
 
-    AppUser save(AppUser newUser);
+    void save(AppUser newUser);
 
     void deleteById(String username);
 
-    AppUser createNewUser(UserRegistrationDto userRegistrationDto);
+    void createNewUser(UserRegistrationDto userRegistrationDto);
 
     void changeProfilePicture(ImageDto imageDto);
 }
