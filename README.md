@@ -1,5 +1,7 @@
 # 🌸 AniLog 🌸
 
+https://anilog-app-2274362be47b.herokuapp.com/
+
 ## 👋 About
 
 Inspired by MyAnimeList, **AniLog** is simple and minimalistic. Discover the easiest way to track, manage, and organize your
